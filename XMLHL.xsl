@@ -72,8 +72,27 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template name="xhlAttributes">
-
+    <xsl:template name="XHLAttributes">
+        <xsl:param name="attrs"/>
+        <xsl:choose>
+            <xsl:when test="string-length($attrs) = 0"/>
+            <xsl:otherwise>
+                <xhl:attrname>
+                    <xsl:value-of select="substring-before($attrs,'=')"/>
+                </xhl:attrname>
+                <xhl:equals>
+                    <xsl:text>=</xsl:text>
+                </xhl:equals>
+                <xhl:attrvalue>
+                    <xsl:value-of select="substring-before(substring-after($attrs,'='),'quot;')"/>
+                </xhl:attrvalue>
+                <xsl:call-template name="XHLAttributes">
+                    <xsl:with-param name="attrs">
+                        <xsl:value-of select="substring-after(substring-after($attrs,'='),'quot;')"/>
+                    </xsl:with-param>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 
