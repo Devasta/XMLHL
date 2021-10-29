@@ -28,19 +28,36 @@
             <xsl:when test="1 =2 "/>
 
             <xsl:when test="substring($code,1,1) = '&lt;'">
-                <xhl:elementbracket>&lt;</xhl:elementbracket>
+                <xsl:variable name="rcode">
+                    <xsl:choose>
+                        <xsl:when test="substring($code,1,2) = '&lt;/'">
+                            <xsl:value-of select="substring($code,3,string-length($code)-2)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="substring($code,2,string-length($code)-1)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
                 <xsl:choose>
-                    <xsl:when test="contains(substring-before(substring($code,2,string-length($code)-1),'&gt;'),' ')">
+                    <xsl:when test="substring($code,1,2) = '&lt;/'">
+                        <xhl:elementbracket>&lt;/</xhl:elementbracket>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xhl:elementbracket>&lt;</xhl:elementbracket>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="contains(substring-before($rcode,'&gt;'),' ')">
                         <xhl:elementname>
-                            <xsl:value-of select="substring-before(substring($code,2,string-length($code)-1),' ')"/>
+                            <xsl:value-of select="substring-before($rcode,' ')"/>
                         </xhl:elementname>
-                        <xhl:attributes>
-                            <xsl:value-of select="substring-before(substring-after(substring($code,2,string-length($code)-1),' '),'&gt;')"/>
-                        </xhl:attributes>
+                        <xsl:call-template name="XHLAttributes">
+                            <xsl:with-param name="attrs" select="substring-before(substring-after($rcode,' '),'&gt;')"/>
+                        </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
                         <xhl:elementname>
-                            <xsl:value-of select="substring-before(substring($code,2,string-length($code)-1),'&gt;')"/>
+                            <xsl:value-of select="substring-before($rcode,'&gt;')"/>
                         </xhl:elementname>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -57,7 +74,7 @@
                 -->
                 <xhl:elementbracket>&gt;</xhl:elementbracket>
                 <xsl:call-template name="XMLHighlighter">
-                    <xsl:with-param name="code" select="substring-after($code,'&gt;')"/>
+                    <xsl:with-param name="code" select="substring-after($rcode,'&gt;')"/>
                 </xsl:call-template>
             </xsl:when>
 
@@ -84,11 +101,14 @@
                     <xsl:text>=</xsl:text>
                 </xhl:equals>
                 <xhl:attrvalue>
-                    <xsl:value-of select="substring-before(substring-after($attrs,'='),'quot;')"/>
+                    <xsl:value-of select="substring-before(substring-after($attrs,'=&quot;'),'&quot;')"/>
                 </xhl:attrvalue>
                 <xsl:call-template name="XHLAttributes">
                     <xsl:with-param name="attrs">
-                        <xsl:value-of select="substring-after(substring-after($attrs,'='),'quot;')"/>
+                        <xsl:value-of select="substring-after(
+                                            $attrs,
+                                            substring-before(substring-after($attrs,'=&quot;'),'&quot;')
+                                            )"/>
                     </xsl:with-param>
                 </xsl:call-template>
             </xsl:otherwise>
