@@ -97,12 +97,19 @@
                 <xhl:attrname>
                     <xsl:value-of select="substring-before($attrs,'=')"/>
                 </xhl:attrname>
-                <xhl:equals>
-                    <xsl:text>=</xsl:text>
-                </xhl:equals>
+                <xhl:equals>=</xhl:equals>
+                <xhl:quote>&quot;</xhl:quote>
                 <xhl:attrvalue>
                     <xsl:value-of select="substring-before(substring-after($attrs,'=&quot;'),'&quot;')"/>
                 </xhl:attrvalue>
+                <xhl:quote>&quot;</xhl:quote>
+                aaaaaa
+                <xsl:value-of select="substring-after(
+                                            $attrs,
+                                            substring-before(substring-after($attrs,'=&quot;'),'&quot;')
+                                            )"/>
+                <xsl:value-of select="string-length(substring-before($attrs,'='))"
+                <!--
                 <xsl:call-template name="XHLAttributes">
                     <xsl:with-param name="attrs">
                         <xsl:value-of select="substring-after(
@@ -111,6 +118,7 @@
                                             )"/>
                     </xsl:with-param>
                 </xsl:call-template>
+                -->
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

@@ -1,3 +1,9 @@
+/Testfile.xml
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/vcs.xml
+/.idea/XMLHL.iml
 xmlhlsrc.xml
 .vscode/launch.json
 .vscode/tasks.json
