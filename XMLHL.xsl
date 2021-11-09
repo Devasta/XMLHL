@@ -10,18 +10,13 @@
         This is a syntax highlighter, intended for use with the website apply-templates.com
     -->
 
-    <xsl:template match="/">
-        <xsl:call-template name="xhl"/>
-    </xsl:template>
-
-    <xsl:template name="xhl">
+    <xsl:template match="code" mode="XMLHL">
         <xhl:hl>
             <xhtml:pre>
                 <xsl:call-template name="XMLHighlighter">
                     <xsl:with-param name="code" select="/"/>
                 </xsl:call-template>
             </xhtml:pre>
-            <xsl:call-template name="XMLHLStyles"/>   
         </xhl:hl>
     </xsl:template>
 
