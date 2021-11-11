@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-               xmlns:xhl="https://apply-templates.com/templates/syntaxhighlighter"
+               xmlns:xhl="https://apply-templates.com/XMLHL"
                xmlns:xhtml="http://www.w3.org/1999/xhtml"
                version="1.0">
 
@@ -10,7 +10,7 @@
         This is a syntax highlighter, intended for use with the website apply-templates.com
     -->
 
-    <xsl:template match="code" mode="XMLHL">
+    <xsl:template match="xhl:xml" mode="XMLHL">
         <xhl:hl>
             <xhtml:pre>
                 <xsl:call-template name="XMLHighlighter">
