@@ -10,7 +10,7 @@
         This is a syntax highlighter, intended for use with the website apply-templates.com
     -->
 
-    <xsl:template match="xhl:xml" mode="XMLHL">
+    <xsl:template match="xhtml:code[@xhl:language='xml']">
         <xhl:hl>
             <xhtml:pre>
                 <xsl:call-template name="XMLHighlighter">
@@ -142,7 +142,7 @@
     </xsl:template>
 
     <xsl:template name="XMLHLStyles">
-        <xhtml:style type="text/css">
+        <xhtml:style xmlns:xhtml="http://www.w3.org/1999/xhtml" type="text/css">
             @namespace xhl url("https://apply-templates.com/templates/syntaxhighlighter");
             @namespace xhtml url("http://www.w3.org/1999/xhtml");
 
