@@ -121,9 +121,19 @@
             <!-- Newline -->
             <xsl:when test="substring($code,1,1) = '&#xa;'">
                 <xh:br/>
-                <xsl:call-template name="XMLHighlighter">
-                    <xsl:with-param name="code" select="substring-after($code,substring($code,1,1))"/>
-                </xsl:call-template>
+                <xsl:choose>
+                    <xsl:when test="contains(substring-after($code, substring($code,1,1)),'&lt;')">
+                        <xhl:space><xsl:value-of select="substring-before(substring-after($code, substring($code,1,1)),'&lt;')"/></xhl:space>
+                        <xsl:call-template name="XMLHighlighter">
+                            <xsl:with-param name="code" select="concat('&lt;',substring-after(substring-after($code, substring($code,1,1)),'&lt;'))"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:call-template name="XMLHighlighter">
+                            <xsl:with-param name="code" select="substring-after($code,substring($code,1,1))"/>
+                        </xsl:call-template>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="substring($code,1,1)"/>
@@ -163,7 +173,7 @@
                 background-color: #eeeeee;
                 display:block;
                 outline: 1px solid green;
-                font-family: Verdana,sans-serif;
+                font-family: "Courier New",monospace;
                 font-size: 0;
             }
 
@@ -222,7 +232,7 @@
             }
             xhl|space {
                 font-size: 16px;
-                margin-right: 1ch;
+                white-space: pre;
             }
         </xh:style>
     </xsl:template>
