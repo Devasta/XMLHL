@@ -175,6 +175,7 @@
                 outline: 1px solid green;
                 font-family: "Courier New",monospace;
                 font-size: 0;
+                overflow-x:auto;
             }
 
             xhl|hl xhl|elementbracket {
